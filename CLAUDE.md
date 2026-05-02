@@ -1,5 +1,7 @@
 # Claude Code – Global Notes
 
+> Source: behavioural section adapted from <https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md>.
+
 ## Environment
 
 - **OS**: Windows 11 Enterprise

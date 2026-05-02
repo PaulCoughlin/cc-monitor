@@ -269,3 +269,52 @@ The build agent should propose adjustments to this layout if simpler/cleaner.
 - Inspect a real session's JSONL before writing parsing code. Don't guess at the structure. The format includes per-turn `usage` blocks (`input_tokens`, `output_tokens`, `cache_creation_input_tokens`, `cache_read_input_tokens`) and message content blocks of various types (text, tool_use, tool_result, etc.). The categorisation logic must walk these content blocks and identify the named source of each.
 - The tool is a magnifying glass. Keep it focused. Resist the urge to add forecasting, recommendations, or "helpful" interpretations. Surface the information; the human interprets.
 - When in doubt about scope, prefer "out of v1" over "let's add it."
+
+---
+
+## Build deviations from spec (as of v0.1.0)
+
+The original spec above is preserved as the design intent. The implementation diverged in the following ways during build, mostly because empirical inspection of real JSONL files contradicted assumptions in the spec. The README is the source of truth for the *current* tool; this section explains the *deltas*.
+
+### What's in the JSONL vs. what isn't
+
+The spec assumed all categories — including **MCP tool schemas** and **System prompt** — could be measured from the JSONL. Empirically, the JSONL contains the conversation log only. The base Claude Code system prompt and the static MCP tool-schema definitions are constructed by Claude Code at request time and never persisted to the JSONL. As a result:
+
+- **"MCP tool schemas (per server)"** — *redefined*. The category still exists with the same name in the UI, but it's now sized from observed MCP *usage* (tool calls + results, grouped by server name extracted from `mcp__<server>__<tool>`), not from static schemas. A server that's configured but never invoked does not appear. This matches the tool's purpose ("show me what's actually consuming context") and avoids reading config files.
+- **"System prompt" single-line category** — *removed*. Cannot be measured from JSONL alone. Use `/context` for this.
+
+### Categories added beyond the spec
+
+To honestly attribute the ~4% startup overhead the spec hand-waves over, three groups were added:
+
+- **Startup files** — `~/.claude/CLAUDE.md`, `<cwd>/CLAUDE.md`, and any `~/.claude/projects/<encoded>/memory/*.md` files. These are read once at attach time.
+- **Skill catalogue** — the `skill_listing` attachment (one big content blob CC injects at session start). Distinct from "Skills invoked" (the spec's "Skills loaded"), which represents skills explicitly invoked via the `Skill` tool.
+- **System injections** — the bucket for hook outputs, MCP instructions deltas, deferred-tool-list deltas, todo reminders, edited-file deltas, etc. These are real `attachment` blocks in the JSONL with measurable size.
+
+### Header additions
+
+The spec's two-line header grew to four lines:
+
+1. Tool name
+2. Session line — adds `gitBranch` (when not "HEAD") and `aiTitle` (when present, CC ≥ 2.1.126) alongside the project + short-id + turn + timestamp.
+3. Model line — `Model: <model_id>  ·  ~Nk tokens in context`. The token count is the only token figure the tool shows; it's a pass-through of `usage.cache_read + cache_creation + input` from the latest assistant turn. No window-% is shown because the JSONL doesn't distinguish 200k from 1M variants.
+4. Schema-mismatch warnings (only when triggered) — `⚠ Claude Code version X.Y.Z not in tested set ...`.
+
+The spec said the tool would not display token counts. That rule was relaxed for the single header figure because it's the API's own number, not a local approximation.
+
+### Session discovery
+
+- **Picker now distinguishes live vs. recently-touched.** `~/.claude/sessions/<pid>.json` files identify currently-running CC processes; their session-ids drive a `[live]` badge in the picker. An idle-but-running session (no recent JSONL writes) still shows up.
+- **Picker shows `aiTitle`** when CC has assigned one (≥ 2.1.126), else falls back to a snippet of the first user message.
+
+### Long-list truncation
+
+Expanded groups cap at 20 visible items; the rest collapse into a single `... N more` line that still attributes its share. The spec called this out as a build-time decision; this is what was chosen.
+
+### Auto-compaction detection
+
+Visual marker is wired (`snap.compaction_at`); detection logic is deferred until a real compaction event has been observed in a JSONL. The tool will currently miss compaction events. When one is observed in the wild, the marker shape can be added to the parser.
+
+### Out-of-scope items honoured
+
+All "Out of Scope for v1" items in the spec remain out of scope. No forecasting, no recommendations, no per-sub-agent breakdown, no dollar amounts, no modification of the observed session, no MCP-server querying.
