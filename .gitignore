@@ -1,0 +1,30 @@
+# Python build / cache artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+build/
+dist/
+.eggs/
+
+# Virtualenvs
+.venv/
+venv/
+env/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local Claude Code settings (user-specific permissions / env)
+.claude/settings.local.json
+
+# Test fixtures captured from real sessions may contain personal paths/data —
+# keep `tests/fixtures/*.jsonl` opt-in once added.
