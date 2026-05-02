@@ -4,41 +4,6 @@ A sidecar diagnostic tool for [Claude Code](https://claude.com/claude-code) that
 
 ![Screenshot of cc-monitor running in a terminal, showing the session picker and the attribution view with the Files read group expanded.](screen-shot.png)
 
-```
-══════════════════════════════════════════════════════════════════════
- Consumption Attribution Viewer
- Session: cc-monitor · "Test script functionality" · f1caa9c0 · turn 14 · 10:30:15 (live)
- Model: claude-opus-4-7  ·  ~123.6k tokens in context
-══════════════════════════════════════════════════════════════════════
-
- CURRENT CONTEXT COMPOSITION  (each line = % of full context)
-
- Startup files
-   CLAUDE.md (user)                       ▌                3%
-   CLAUDE.md (project)                    ▌                3%
-
- ▸ MCP tool schemas (0)
- ▸ Files read (1)                        ██              17%
- ▸ Tool results retained (36)            ████            29%
-
- Skill catalogue
-   skill listing (catalogue)              ██              15%
-
- Conversation
-   user messages (9)                      ▌                2%
-   assistant messages (65)                █▌              14%
-
- System injections
-   hook: SessionStart:startup             ▌                6%
-   hook: SessionStart                     ▌                6%
-   deferred tools list (delta)            ▌                5%
-
-──────────────────────────────────────────────────────────────────────
- [m] MCPs  [f] files  [t] tool results
- [s] sort: size ▾  [r] refresh  [q] quit
-══════════════════════════════════════════════════════════════════════
-```
-
 ## Why this exists
 
 Claude Code already provides `/context`, `/status`, and `/usage` for totals and remaining capacity. This tool answers a different question: **where is the consumption actually going?**
