@@ -178,7 +178,3 @@ These are deliberate omissions:
 ## License
 
 MIT.
-
-## Issues
-
-Please file issues at https://github.com/PaulCoughlin/cc-monitor/issues. Include the Claude Code version (`session_version` field on any line of your transcript) and a short JSONL excerpt if you're reporting a parsing bug.
