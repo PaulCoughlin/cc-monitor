@@ -2,6 +2,8 @@
 
 A sidecar diagnostic tool for [Claude Code](https://claude.com/claude-code) that shows, in real time, **what** a session's context is being consumed by — broken down per named source.
 
+![Screenshot of cc-monitor running in a terminal, showing the session picker and the attribution view with the Files read group expanded.](screen-shot.png)
+
 ```
 ══════════════════════════════════════════════════════════════════════
  Consumption Attribution Viewer
