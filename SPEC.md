@@ -40,7 +40,7 @@ Three modes:
      2. side-project  b9c477ad   (last activity: 1m ago)
    Select: _
    ```
-3. **Explicit** — `attribviewer --session 3a7f8e21` for unambiguous attachment by session-id.
+3. **Explicit** — `cc-monitor --session 3a7f8e21` for unambiguous attachment by session-id.
 
 The header in the live view always shows project name + short session ID so the user can confirm which session is being observed.
 
@@ -244,7 +244,7 @@ Repo: https://github.com/PaulCoughlin/cc-monitor
 ├── SPEC.md            (this document)
 ├── README.md          (install, usage, version compatibility)
 ├── pyproject.toml     (or requirements.txt)
-├── attribviewer/
+├── cc_monitor/
 │   ├── __init__.py
 │   ├── __main__.py    (entry point)
 │   ├── session.py     (JSONL discovery, attachment, tailing)
@@ -314,6 +314,10 @@ Expanded groups cap at 20 visible items; the rest collapse into a single `... N 
 ### Auto-compaction detection
 
 Visual marker is wired (`snap.compaction_at`); detection logic is deferred until a real compaction event has been observed in a JSONL. The tool will currently miss compaction events. When one is observed in the wild, the marker shape can be added to the parser.
+
+### Naming
+
+The spec's working name "Consumption Attribution Viewer" / `attribviewer` was renamed to **`cc-monitor`** post-build to match the repo. The full descriptive name is preserved as the TUI header text. Package: `cc_monitor`. Binary: `cc-monitor`. PyPI/dist name: `cc-monitor`.
 
 ### Out-of-scope items honoured
 

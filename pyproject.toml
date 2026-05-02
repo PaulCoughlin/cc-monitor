@@ -3,14 +3,14 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "attribviewer"
+name = "cc-monitor"
 version = "0.1.0"
 description = "Sidecar consumption attribution viewer for Claude Code sessions."
 requires-python = ">=3.11"
 dependencies = ["rich>=13.7"]
 
 [project.scripts]
-attribviewer = "attribviewer.__main__:main"
+cc-monitor = "cc_monitor.__main__:main"
 
 [tool.setuptools.packages.find]
-include = ["attribviewer*"]
+include = ["cc_monitor*"]

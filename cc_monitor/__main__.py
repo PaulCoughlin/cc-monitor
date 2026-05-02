@@ -37,7 +37,7 @@ def _session_branch(events: list[dict]) -> str | None:
 
 def _parse_args(argv: list[str]) -> argparse.Namespace:
     p = argparse.ArgumentParser(
-        prog="attribviewer",
+        prog="cc-monitor",
         description="Sidecar consumption attribution viewer for Claude Code sessions.",
     )
     p.add_argument(

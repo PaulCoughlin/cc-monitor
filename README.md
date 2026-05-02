@@ -94,10 +94,10 @@ In a separate terminal from your Claude Code session:
 
 ```bash
 # auto-attach to the active session
-attribviewer
+cc-monitor
 
 # or attach by id (full or short prefix)
-attribviewer --session 1393c4a5
+cc-monitor --session 1393c4a5
 ```
 
 If multiple sessions are running, you'll get a picker:
@@ -140,7 +140,7 @@ If you see this, please file an issue with the version + the unknown type names 
 
 ## Design notes
 
-- **One sidecar instance per session.** Running multiple Claude Code sessions = run multiple `attribviewer` instances. There's no multi-session aggregation.
+- **One sidecar instance per session.** Running multiple Claude Code sessions = run multiple `cc-monitor` instances. There's no multi-session aggregation.
 - **No external dependencies on the observed session.** We don't query the running CC, we don't poke MCP servers to size their schemas, we don't intercept anything. We just read the same files CC writes.
 - **No estimation games.** If we can't see something cleanly in the JSONL or in a small set of well-known local files, we don't show it. The exception is the single token figure pulled straight from the API's own `usage` block.
 - **Variant detection is intentionally absent.** Claude's 1M-context Opus and Sonnet variants record the same model id in the JSONL as their 200k counterparts, so showing "% of window" would require guessing. We show the raw token figure and let `/context` answer the rest.
@@ -165,7 +165,7 @@ These are deliberate omissions:
 ├── SPEC.md            (the original design spec — read this for the why)
 ├── README.md          (this file)
 ├── pyproject.toml
-├── attribviewer/
+├── cc_monitor/
 │   ├── __init__.py
 │   ├── __main__.py    (entry point: discover session, drive the TUI)
 │   ├── session.py     (JSONL discovery, picker, tail)
